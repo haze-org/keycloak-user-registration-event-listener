@@ -1,15 +1,15 @@
 package com.haze.keycloak;
 
-import com.rabbitmq.client.ConnectionFactory;
-import org.keycloak.Config;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import org.keycloak.Config;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventListenerProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 
-public class UserRegistrationEventListenerProviderFactory implements EventListenerProviderFactory{
+public class UserRegistrationEventListenerProviderFactory implements EventListenerProviderFactory {
 
     private Connection connection;
     private Channel channel;
@@ -17,7 +17,7 @@ public class UserRegistrationEventListenerProviderFactory implements EventListen
 
     @Override
     public EventListenerProvider create(KeycloakSession keycloakSession) {
-        return new UserRegistrationEventListenerProvider(channel, EXCHANGE_NAME);
+        return new UserRegistrationEventListenerProvider(keycloakSession, channel, EXCHANGE_NAME);
     }
 
     @Override
@@ -30,10 +30,10 @@ public class UserRegistrationEventListenerProviderFactory implements EventListen
 
             this.connection = connectionFactory.newConnection();
             this.channel = connection.createChannel();
-            this.channel.exchangeDeclare(EXCHANGE_NAME, "topic", true);
+            this.channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
             System.out.println("HAZE-FACTORY: Connected to RabbitMQ successfully.");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("HAZE-FACTORY: Failed to connect to RabbitMQ: " + e.getMessage());
         }
     }
@@ -43,10 +43,10 @@ public class UserRegistrationEventListenerProviderFactory implements EventListen
 
     @Override
     public void close() {
-        try{
+        try {
             if (channel != null) channel.close();
             if (connection != null) connection.close();
-        } catch (Exception ignored){}
+        } catch (Exception ignored) {}
     }
 
     @Override
