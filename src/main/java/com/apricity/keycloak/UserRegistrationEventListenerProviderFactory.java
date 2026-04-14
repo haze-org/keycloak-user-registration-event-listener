@@ -1,4 +1,4 @@
-package com.haze.keycloak;
+package com.apricity.keycloak;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -31,10 +31,10 @@ public class UserRegistrationEventListenerProviderFactory implements EventListen
             this.connection = connectionFactory.newConnection();
             this.channel = connection.createChannel();
             this.channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
-            System.out.println("HAZE-FACTORY: Connected to RabbitMQ successfully.");
+            System.out.println("APRICITY-FACTORY: Connected to RabbitMQ successfully.");
 
         } catch (Exception e) {
-            System.err.println("HAZE-FACTORY: Failed to connect to RabbitMQ: " + e.getMessage());
+            System.err.println("APRICITY-FACTORY: Failed to connect to RabbitMQ: " + e.getMessage());
         }
     }
 
@@ -51,6 +51,6 @@ public class UserRegistrationEventListenerProviderFactory implements EventListen
 
     @Override
     public String getId() {
-        return "haze-rabbitmq-listener";
+        return "apricity-rabbitmq-listener";
     }
 }

@@ -1,4 +1,4 @@
-package com.haze.keycloak;
+package com.apricity.keycloak;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.rabbitmq.client.AMQP;
@@ -50,9 +50,9 @@ public class UserRegistrationEventListenerProvider implements EventListenerProvi
             try {
                 byte[] body = jsonMapper.writeValueAsBytes(messageBody);
                 channel.basicPublish(exchange, routingKey, props, body);
-                System.out.println("HAZE-WORKER: Sent message to RabbitMQ for user: " + event.getUserId());
+                System.out.println("APRICITY-WORKER: Sent message to RabbitMQ for user: " + event.getUserId());
             } catch (Exception e) {
-                System.err.println("HAZE-WORKER: Failed to publish event: " + e.getMessage());
+                System.err.println("APRICITY-WORKER: Failed to publish event: " + e.getMessage());
             }
         }
     }
